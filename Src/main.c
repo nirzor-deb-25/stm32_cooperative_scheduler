@@ -4,6 +4,7 @@
 #include "stm32_regs.h"
 #include "timebase.h"
 #include "scheduler.h"
+#include "scheduler_selftest.h"
 
 #define ALL_LED_MASK (0xFUL << 12)
 
@@ -118,6 +119,11 @@ int main(void)
 {
     leds_init();
     coop_stage = 1U;
+
+    if (!scheduler_selftest_run())
+    {
+        demo_fail(4U);
+    }
 
     timebase_init();
     scheduler_init();
